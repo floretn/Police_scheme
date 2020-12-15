@@ -152,7 +152,7 @@ INSERT INTO police.tcl_role (name_role) VALUES ('Подсудимый');
 
 
 
-INSERT INTO police.t_cell (number_of_places, employed_places) VALUES (5, 4);
+INSERT INTO police.t_cell (number_of_places, employed_places) VALUES (5, 1);
 
 
 INSERT INTO police.t_person (last_name, first_name, patronymic) VALUES ('Раскольников', 'Родион', 'Романович');
@@ -184,226 +184,44 @@ INSERT INTO police.tcl_post(id_parent_post,function) VALUES (3, 'Сыщик');
 
 
 
-INSERT INTO police.t_person_contacts(id_person,id_contacts_info,value_contacts_info)
-	(SELECT 
-		t_person.id_person,
-		tcl_contacts_type.id_contacts_info,
-		'Гражданская ул., д. 19'
-	FROM police.t_person, police.tcl_contacts_type
-	WHERE	t_person.last_name = 'Раскольников' and 
-		tcl_contacts_type.type_name = 'Адрес');
-INSERT INTO police.t_person_contacts(id_person,id_contacts_info,value_contacts_info)
-	(SELECT 
-		t_person.id_person,
-		tcl_contacts_type.id_contacts_info,
-		'Казначейская ул., д. 7, кв. 13'
-	FROM police.t_person, police.tcl_contacts_type
-	WHERE	t_person.last_name = 'Процентщица' and 
-		tcl_contacts_type.type_name = 'Адрес');
-INSERT INTO police.t_person_contacts(id_person,id_contacts_info,value_contacts_info)
-	(SELECT 
-		t_person.id_person,
-		tcl_contacts_type.id_contacts_info,
-		'Набережная канала Грибоедова, д. 104, кв. 13'
-	FROM police.t_person, police.tcl_contacts_type
-	WHERE	t_person.last_name = 'Сестра' and 
-		tcl_contacts_type.type_name = 'Адрес');
-INSERT INTO police.t_person_contacts(id_person,id_contacts_info,value_contacts_info)
-	(SELECT 
-		t_person.id_person,
-		tcl_contacts_type.id_contacts_info,
-		'Набережная канала Грибоедова, д. 104, кв. 13'
-	FROM police.t_person, police.tcl_contacts_type
-	WHERE	t_person.last_name = 'Сестра' and 
-		tcl_contacts_type.type_name = 'Адрес');
-INSERT INTO police.t_person_contacts(id_person,id_contacts_info,value_contacts_info)
-	(SELECT 
-		t_person.id_person,
-		tcl_contacts_type.id_contacts_info,
-		'Гостинница, сосед Сони Мармеладовой'
-	FROM police.t_person, police.tcl_contacts_type
-	WHERE	t_person.last_name = 'Свидригайлов' and 
-		tcl_contacts_type.type_name = 'Адрес');
-INSERT INTO police.t_person_contacts(id_person,id_contacts_info,value_contacts_info)
-	(SELECT 
-		t_person.id_person,
-		tcl_contacts_type.id_contacts_info,
-		'???'
-	FROM police.t_person, police.tcl_contacts_type
-	WHERE	t_person.last_name = 'Мориарти' and 
-		tcl_contacts_type.type_name = 'Адрес');
-INSERT INTO police.t_person_contacts(id_person,id_contacts_info,value_contacts_info)
-	(SELECT 
-		t_person.id_person,
-		tcl_contacts_type.id_contacts_info,
-		'777'
-	FROM police.t_person, police.tcl_contacts_type
-	WHERE	t_person.last_name = 'Мориарти' and 
-		tcl_contacts_type.type_name = 'Телефон');
+INSERT INTO police.t_person_contacts(id_person,id_contacts_info,value_contacts_info) values (1, 2, 'Гражданская ул., д. 19');
+INSERT INTO police.t_person_contacts(id_person,id_contacts_info,value_contacts_info) values (2, 2, 'Казначейская ул., д. 7, кв. 13');
+INSERT INTO police.t_person_contacts(id_person,id_contacts_info,value_contacts_info) values (4, 2, 'Набережная канала Грибоедова, д. 104, кв. 13');
+INSERT INTO police.t_person_contacts(id_person,id_contacts_info,value_contacts_info) values (3, 2, 'Гостинница, сосед Сони Мармеладовой');
+INSERT INTO police.t_person_contacts(id_person,id_contacts_info,value_contacts_info) values (5, 2, '???');
+INSERT INTO police.t_person_contacts(id_person,id_contacts_info,value_contacts_info) values (5, 1, '777');
 
 
 
-INSERT INTO police.t_employee(id_post,id_department,last_name,first_name,rank)
-	(SELECT 
-		tcl_post.id_post,
-		t_department.id_department,
-		'Холмс',
-		'Шерлок',
-		'Независимый консультант'
-	FROM police.tcl_post, police.t_department
-	WHERE	tcl_post.function = 'Сыщик' and 
-		t_department.department_name = 'Скотлен-ярд');
-INSERT INTO police.t_employee(id_post,id_department,last_name,first_name,patronymic,rank)
-	(SELECT 
-		tcl_post.id_post,
-		t_department.id_department,
-		'Следователь',
-		'Порфирий',
-		'Петрович',
-		'Старший Сержант'
-	FROM police.tcl_post, police.t_department
-	WHERE	tcl_post.function = 'Следователь' and 
-		t_department.department_name = '3-й полицейский участок Казанской части');
-INSERT INTO police.t_employee(id_post,id_department,last_name,first_name,patronymic,rank)
-	(SELECT 
-		tcl_post.id_post,
-		t_department.id_department,
-		'НеЗнаю',
-		'НеПомню',
-		'Какой-тович',
-		'Допустим Майор'
-	FROM police.tcl_post, police.t_department
-	WHERE	tcl_post.function = 'Начальник отдела' and 
-		t_department.department_name = '3-й полицейский участок Казанской части');
+INSERT INTO police.t_employee(id_post,id_department,last_name,first_name,rank) values (3, 2, 'Холмс', 'Шерлок', 'Независимый консультант');
+INSERT INTO police.t_employee(id_post,id_department,last_name,first_name,patronymic,rank) values (2, 1, 'Следователь', 'Порфирий', 'Петрович', 'Старший сержант');
+INSERT INTO police.t_employee(id_post,id_department,last_name,first_name,patronymic,rank) values (1, 1, 'НеЗнаю', 'НеПомню', 'Какой-тович', 'Допустим Майор');
 
 
 
 
-INSERT INTO police.t_employee_contacts(id_employee,id_contacts_info,value_contacts_info)
-	(SELECT 
-		t_employee.id_employee,
-		tcl_contacts_type.id_contacts_info,
-		'666'
-	FROM police.t_employee, police.tcl_contacts_type
-	WHERE	t_employee.last_name = 'Холмс' and 
-		tcl_contacts_type.type_name = 'Телефон');
-INSERT INTO police.t_employee_contacts(id_employee,id_contacts_info,value_contacts_info)
-	(SELECT 
-		t_employee.id_employee,
-		tcl_contacts_type.id_contacts_info,
-		'Бэйкер-стрит, д. 221Б'
-	FROM police.t_employee, police.tcl_contacts_type
-	WHERE	t_employee.last_name = 'Холмс' and 
-		tcl_contacts_type.type_name = 'Адрес');
-INSERT INTO police.t_employee_contacts(id_employee,id_contacts_info,value_contacts_info)
-	(SELECT 
-		t_employee.id_employee,
-		tcl_contacts_type.id_contacts_info,
-		'11-134-2323-43-23'
-	FROM police.t_employee, police.tcl_contacts_type
-	WHERE	t_employee.last_name = 'Следователь' and 
-		tcl_contacts_type.type_name = 'Телефон');
-INSERT INTO police.t_employee_contacts(id_employee,id_contacts_info,value_contacts_info)
-	(SELECT 
-		t_employee.id_employee,
-		tcl_contacts_type.id_contacts_info,
-		'Всегда в отпуске'
-	FROM police.t_employee, police.tcl_contacts_type
-	WHERE	t_employee.last_name = 'НеЗнаю' and 
-		tcl_contacts_type.type_name = 'Адрес');
+INSERT INTO police.t_employee_contacts(id_employee,id_contacts_info,value_contacts_info) values (1, 2, '666');
+INSERT INTO police.t_employee_contacts(id_employee,id_contacts_info,value_contacts_info) values (1, 1, 'Бэйкер-стрит, д. 221Б');
+INSERT INTO police.t_employee_contacts(id_employee,id_contacts_info,value_contacts_info) values (2, 2, '11-134-2323-43-23');
+INSERT INTO police.t_employee_contacts(id_employee,id_contacts_info,value_contacts_info) values (3, 1, 'Всегда в отпуске');
 
 
 
-INSERT INTO police.t_protocol(id_employee,id_case_name,status)
-	(SELECT 
-		t_employee.id_employee,
-		tcl_case_name.id_case_name,
-		false
-	FROM police.t_employee, police.tcl_case_name
-	WHERE	t_employee.last_name = 'Следователь' and 
-		tcl_case_name.case_name = 'Двойное убийство');
-INSERT INTO police.t_protocol(id_employee,id_case_name,status)
-	(SELECT
-		t_employee.id_employee,
-		tcl_case_name.id_case_name,
-		true
-	FROM police.t_employee, police.tcl_case_name
-	WHERE	t_employee.last_name = 'Холмс' and 
-		tcl_case_name.case_name = 'Наполеон преступного мира');
+INSERT INTO police.t_protocol(id_employee,id_case_name,status) values (2, 1, false);
+INSERT INTO police.t_protocol(id_employee,id_case_name,status) values (1, 2, true);
 
 
 
-INSERT INTO police.t_evidence(id_protocol,object_description,storage_box)
-	(SELECT 
-		t_protocol.id_protocol,
-		'Топор',
-		1
-	FROM police.t_protocol
-	WHERE	t_protocol.id_protocol = 1);
-INSERT INTO police.t_evidence(id_protocol,object_description,storage_box)
-	(SELECT 
-		t_protocol.id_protocol,
-		'Старухины драгоценности под камнем',
-		1
-	FROM police.t_protocol
-	WHERE	t_protocol.id_protocol = 1);
-INSERT INTO police.t_evidence(id_protocol,object_description,storage_box)
-	(SELECT 
-		t_protocol.id_protocol,
-		'Отсутствуют, но будут найдены',
-		2
-	FROM police.t_protocol
-	WHERE	t_protocol.id_protocol = 2);
+INSERT INTO police.t_evidence(id_protocol,object_description,storage_box) values (1, 'Топор', 1);
+INSERT INTO police.t_evidence(id_protocol,object_description,storage_box) values (1, 'Старухины драгоценности под камнем', 1);
+INSERT INTO police.t_evidence(id_protocol,object_description,storage_box) values (2, 'Отсутствуют, но будут найдены', 2);
 
 
 
-INSERT INTO police.t_investigation_participants(id_role,id_protocol,id_person,id_cell)
-	(SELECT 
-		tcl_role.id_role,
-		t_protocol.id_protocol,
-		t_person.id_person,
-		t_cell.id_cell
-	FROM police.tcl_role, police.t_protocol, police.t_person, police.t_cell
-	WHERE	tcl_role.name_role = 'Подсудимый' and
-		t_protocol.id_protocol = 1 and 
-		t_person.last_name = 'Раскольников' and
-		t_cell.id_cell = 1);
-
-INSERT INTO police.t_investigation_participants(id_role,id_protocol,id_person)
-	(SELECT 
-		tcl_role.id_role,
-		t_protocol.id_protocol,
-		t_person.id_person
-	FROM police.tcl_role, police.t_protocol, police.t_person
-	WHERE	tcl_role.name_role = 'Потерпевший' and
-		t_protocol.id_protocol = 1 and
-		t_person.last_name = 'Процентщица');
-INSERT INTO police.t_investigation_participants(id_role,id_protocol,id_person)
-	(SELECT 
-		tcl_role.id_role,
-		t_protocol.id_protocol,
-		t_person.id_person
-	FROM police.tcl_role, police.t_protocol, police.t_person
-	WHERE	tcl_role.name_role = 'Потерпевший' and
-		t_protocol.id_protocol = 1 and
-		t_person.last_name = 'Сестра');
-INSERT INTO police.t_investigation_participants(id_role,id_protocol,id_person)
-	(SELECT 
-		tcl_role.id_role,
-		t_protocol.id_protocol,
-		t_person.id_person
-	FROM police.tcl_role, police.t_protocol, police.t_person
-	WHERE	tcl_role.name_role = 'Свидетель' and
-		t_protocol.id_protocol = 1 and
-		t_person.last_name = 'Свидригайлов');
-INSERT INTO police.t_investigation_participants(id_role,id_protocol,id_person)
-	(SELECT 
-		tcl_role.id_role,
-		t_protocol.id_protocol,
-		t_person.id_person
-	FROM police.tcl_role, police.t_protocol, police.t_person
-	WHERE	tcl_role.name_role = 'Подозреваемый' and
-		t_protocol.id_protocol = 2 and
-		t_person.last_name = 'Мориарти');
+INSERT INTO police.t_investigation_participants(id_role,id_protocol,id_person,id_cell) values (4, 1, 1, 1);
+INSERT INTO police.t_investigation_participants(id_role,id_protocol,id_person) values (3, 1, 2);
+INSERT INTO police.t_investigation_participants(id_role,id_protocol,id_person) values (3, 1, 4);
+INSERT INTO police.t_investigation_participants(id_role,id_protocol,id_person) values (2, 1, 3);
+INSERT INTO police.t_investigation_participants(id_role,id_protocol,id_person) values (1, 2, 5);
 
 end;

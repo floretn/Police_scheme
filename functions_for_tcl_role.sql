@@ -1,4 +1,5 @@
-﻿drop function if exists police.insert_in_tcl_role(varchar);
+﻿
+drop function if exists police.insert_in_tcl_role(varchar);
 create or replace function police.insert_in_tcl_role
 (in name_role_new varchar,  
 out id_new integer)
@@ -29,14 +30,14 @@ $BODY$
 /** Функция изменения значения в таблице police.tcl_role
   * @author Софронов И.Е.
   * @version 01.12.20
-  * @param id_role_up: id изменяемого кортежа, varchar: новое название роли.
+  * @param id_role_up: id изменяемого кортежа.
   * @param name_role_new: новое название роли.
   * @return запись со значениями старого кортежа.
   */
 declare
 rec record;
 begin
-	select * from police.tcl_role into rec where id_role = id_role_up;
+	select id_role, name_role from police.tcl_role into rec where id_role = id_role_up;
 	update police.tcl_role
 	set name_role = name_role_new
 	where id_role = id_role_up;
@@ -54,13 +55,13 @@ $BODY$
 /** Функция удаления значения из таблицы police.tcl_role
   * @author Софронов И.Е.
   * @version 01.12.20
-  * @param integer: id удаляемогоо кортежа.
+  * @param id_role_del: id удаляемогоо кортежа.
   * @return запись со значениями удалённого кортежа.
   */
 declare
 rec record;
 begin
-	select * from police.tcl_role into rec where id_role = id_role_del;
+	select id_role, name_role from police.tcl_role into rec where id_role = id_role_del;
 	delete from police.tcl_role
 	where id_role = id_role_del;
 	return rec;
