@@ -26,8 +26,11 @@ drop function if exists police.update_tcl_post(integer, integer, varchar);
 create or replace function police.update_tcl_post
 (in id_post_up integer, 
 in id_parent_post_new integer,
-in function_new varchar)
-returns record
+in function_new varchar,
+out id_post_old integer, 
+out id_parent_post_old integer,
+out function_old varchar)
+returns setof record
 as
 $BODY$
 /** Функция изменения значения в таблице police.tcl_post
@@ -38,23 +41,26 @@ $BODY$
   * @param function_new: новая исполняемая функция поста.
   * @return запись со значениями старого кортежа.
   */
-declare
-rec record;
 begin
-	select id_post, id_parent_post, function from police.tcl_post into rec where id_post = id_post_up;
+return query
+	select id_post, id_parent_post, function 
+		from police.tcl_post 
+		where id_post = id_post_up;
 	update police.tcl_post
-	set id_parent_post = id_parent_post_new,
-	function = function_new 
+	set id_parent_post = coalesce(id_parent_post_new, id_parent_post),
+	function = coalesce(function_new, function) 
 	where id_post = id_post_up;
-	return rec;
 end;
 $BODY$
 language plpgsql;
 
 drop function if exists police.delete_from_tcl_post(integer);
 create or replace function police.delete_from_tcl_post
-(in id_post_del integer)
-returns record
+(in id_post_del integer,
+out id_post_old integer, 
+out id_parent_post_old integer,
+out function_old varchar)
+returns setof record
 as
 $BODY$
 /** Функция удаления значения из таблицы police.tcl_post
@@ -63,13 +69,13 @@ $BODY$
   * @param id_post_del: id удаляемогоо кортежа.
   * @return запись со значениями удалённого кортежа.
   */
-declare
-rec record;
 begin
-	select id_post, id_parent_post, function from police.tcl_post into rec where id_post = id_post_del;
+return query
+	select id_post, id_parent_post, function 
+		from police.tcl_post
+		where id_post = id_post_del;
 	delete from police.tcl_post
 	where id_post = id_post_del;
-	return rec;
 end;
 $BODY$
 language plpgsql;
@@ -77,7 +83,7 @@ language plpgsql;
 -- Проверка работы функций: 
 -- select * from police.insert_in_tcl_post(1, 'Левый поц');
 -- select * from police.tcl_post;
--- select id_post, id_parent_post, function from police.update_tcl_post(4, 3, 'Правый поц') as f(id_post integer, id_parent_post integer, function varchar);
+-- select * from police.update_tcl_post(3, 3, 'Правый поц');
 -- select * from police.tcl_post;
--- select id_post, id_parent_post, function from police.delete_from_tcl_post(4) as f(id_post integer, id_parent_post integer, function varchar);
+-- select * from police.delete_from_tcl_post(4);
 -- select * from police.tcl_post;

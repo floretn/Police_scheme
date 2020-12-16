@@ -23,8 +23,10 @@ language plpgsql;
 drop function if exists police.update_tcl_role(integer, varchar);
 create or replace function police.update_tcl_role
 (in id_role_up integer, 
-in name_role_new varchar)
-returns record
+in name_role_new varchar,
+out id_role_old integer, 
+out name_role_old varchar)
+returns setof record
 as
 $BODY$
 /** Функция изменения значения в таблице police.tcl_role
@@ -34,22 +36,24 @@ $BODY$
   * @param name_role_new: новое название роли.
   * @return запись со значениями старого кортежа.
   */
-declare
-rec record;
 begin
-	select id_role, name_role from police.tcl_role into rec where id_role = id_role_up;
+return query
+	select id_role, name_role 
+		from police.tcl_role 
+		where id_role = id_role_up;
 	update police.tcl_role
-	set name_role = name_role_new
+	set name_role = coalesce(name_role_new, name_role)
 	where id_role = id_role_up;
-	return rec;
 end;
 $BODY$
 language plpgsql;
 
 drop function if exists police.delete_from_tcl_role(integer);
 create or replace function police.delete_from_tcl_role
-(in id_role_del integer)
-returns record
+(in id_role_del integer,
+out id_role_old integer, 
+out name_role_old varchar)
+returns setof record
 as
 $BODY$
 /** Функция удаления значения из таблицы police.tcl_role
@@ -58,13 +62,13 @@ $BODY$
   * @param id_role_del: id удаляемогоо кортежа.
   * @return запись со значениями удалённого кортежа.
   */
-declare
-rec record;
 begin
-	select id_role, name_role from police.tcl_role into rec where id_role = id_role_del;
+return query
+	select id_role, name_role 
+		from police.tcl_role
+		where id_role = id_role_del;
 	delete from police.tcl_role
 	where id_role = id_role_del;
-	return rec;
 end;
 $BODY$
 language plpgsql;
@@ -72,7 +76,7 @@ language plpgsql;
 -- Проверка работы функций: 
 -- select * from police.insert_in_tcl_role('Левый поц');
 -- select * from police.tcl_role;
--- select id_role, name_role from police.update_tcl_role(5, 'Правый поц')  as f(id_role integer, name_role varchar);
+-- select * from police.update_tcl_role(5, 'Правый поц');
 -- select * from police.tcl_role;
--- select id_role, name_role from police.delete_from_tcl_role(5)  as f(id_role integer, name_role varchar);
+-- select * from police.delete_from_tcl_role(5);
 -- select * from police.tcl_role;

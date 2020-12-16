@@ -26,8 +26,11 @@ drop function if exists police.update_tcl_case_name(integer, varchar, varchar);
 create or replace function police.update_tcl_case_name
 (in id_case_name_up integer, 
 in case_name_new varchar,
-in severity_of_crime_new varchar)
-returns record
+in severity_of_crime_new varchar,
+out id_case_name_old integer, 
+out case_name_old varchar,
+out severity_of_crime_old varchar)
+returns setof record
 as
 $BODY$
 /** Функция изменения значения в таблице police.tcl_case_name
@@ -38,26 +41,26 @@ $BODY$
   * @param severity_of_crime_new: новая тяжесть преступления.
   * @return запись со значениями старого кортежа.
   */
-declare
-rec record;
 begin
+return query
 	select id_case_name, case_name, severity_of_crime 
 		from police.tcl_case_name 
-		into rec 
 		where id_case_name = id_case_name_up;
 	update police.tcl_case_name
-	set case_name = case_name_new,
-	severity_of_crime = severity_of_crime_new 
+	set case_name = coalesce(case_name_new, case_name),
+	severity_of_crime = coalesce(severity_of_crime_new, severity_of_crime)
 	where id_case_name = id_case_name_up;
-	return rec;
 end;
 $BODY$
 language plpgsql;
 
 drop function if exists police.delete_from_tcl_case_name(integer);
 create or replace function police.delete_from_tcl_case_name
-(in id_case_name_del integer)
-returns record
+(in id_case_name_del integer,
+out id_case_name_old integer, 
+out case_name_old varchar,
+out severity_of_crime_old varchar)
+returns setof record
 as
 $BODY$
 /** Функция удаления значения из таблицы police.tcl_case_name
@@ -66,16 +69,13 @@ $BODY$
   * @param id_case_name_del: id удаляемогоо кортежа.
   * @return запись со значениями удалённого кортежа.
   */
-declare
-rec record;
 begin
+return query
 	select id_case_name, case_name, severity_of_crime 
-		from police.tcl_case_name 
-		into rec 
+		from police.tcl_case_name  
 		where id_case_name = id_case_name_del;
 	delete from police.tcl_case_name
 	where id_case_name = id_case_name_del;
-	return rec;
 end;
 $BODY$
 language plpgsql;
@@ -83,7 +83,7 @@ language plpgsql;
 -- Проверка работы функций: 
 -- select * from police.insert_in_tcl_case_name('Расчленение', 'Супер мега пупер тяжкое');
 -- select * from police.tcl_case_name;
--- select id_case_name, case_name, severity_of_crime from police.update_tcl_case_name(3, 'Расчленение и насилие', 'Супер мега пупер мега пупер тяжкое') as f(id_case_name integer, case_name varchar, severity_of_crime varchar);
+-- select * from police.update_tcl_case_name(3, 'Расчленение и насилие', 'Супер мега пупер мега пупер тяжкое');
 -- select * from police.tcl_case_name;
--- select id_case_name, case_name, severity_of_crime from police.delete_from_tcl_case_name(3) as f(id_case_name integer, case_name varchar, severity_of_crime varchar);
+-- select * from police.delete_from_tcl_case_name(3);
 -- select * from police.tcl_case_name;
