@@ -78,6 +78,11 @@ TO ip_manager;
 GRANT USAGE ON SCHEMA police
 TO ip_manager;
 
+GRANT USAGE, SELECT ON SEQUENCE police.t_person_id_person_seq TO ip_manager;
+GRANT USAGE, SELECT ON SEQUENCE police.t_person_contacts_id_person_contacts_seq TO ip_manager;
+GRANT USAGE, SELECT ON SEQUENCE police.t_investigation_participants_id_participants_seq TO ip_manager;
+GRANT USAGE, SELECT ON SEQUENCE police.tcl_role_id_role_seq TO ip_manager;
+
 GRANT SELECT, INSERT, DELETE, UPDATE 
 ON TABLE police.t_person,
 	police.t_person_contacts,
@@ -104,6 +109,10 @@ ON TABLE police.t_employee,
 	police.tcl_post
 TO hr_manager;
 
+GRANT USAGE, SELECT ON SEQUENCE police.t_employee_id_employee_seq TO hr_manager;
+GRANT USAGE, SELECT ON SEQUENCE police.t_employee_contacts_id_employee_contacts_seq TO hr_manager;
+GRANT USAGE, SELECT ON SEQUENCE police.tcl_post_id_post_seq TO hr_manager;
+
 -- staff users
  -- hr_manager
   -- создание
@@ -117,6 +126,8 @@ TO sherlock_holms;
 
 GRANT USAGE, SELECT ON SEQUENCE police.t_evidence_id_evidence_seq TO sherlock_holms;
 GRANT USAGE, SELECT ON SEQUENCE police.t_logger_id_log_seq TO sherlock_holms;
+GRANT USAGE, SELECT ON SEQUENCE police.t_protocol_id_protocol_seq TO sherlock_holms;
+GRANT USAGE, SELECT ON SEQUENCE police.tcl_case_name_id_case_name_seq TO sherlock_holms;
 
 GRANT SELECT, INSERT
 ON TABLE police.t_protocol,
@@ -142,6 +153,7 @@ TO porfiriy_petrovich;
 
 GRANT USAGE, SELECT ON SEQUENCE police.t_evidence_id_evidence_seq TO porfiriy_petrovich;
 GRANT USAGE, SELECT ON SEQUENCE police.t_logger_id_log_seq TO porfiriy_petrovich;
+GRANT USAGE, SELECT ON SEQUENCE police.t_protocol_id_protocol_seq TO porfiriy_petrovich;
 
 -- Добавления свойства учета политики защиты строк для пользователей групповых ролей
 ALTER ROLE staff WITH NOBYPASSRLS;

@@ -11,9 +11,9 @@ $BODY$
   * @version 15.12.20
   * @param number_of_places_new: количество мест новой камеры.
   * @param employed_places_new: количество занятых мест.
+  * @return id вставленного кортежа.
   * @throw ошибка соответствия реальности, если один из параметров меньше нуля.
   * @throw ошибка соответствия реальности, если number_of_places_new меньше employed_places_new.
-  * @return id вставленного кортежа.
   */
 begin
 	if employed_places_new > number_of_places_new
@@ -50,17 +50,17 @@ $BODY$
   * @param id_number_of_places_up: id изменяемого кортежа.
   * @param number_of_places_new: количество мест новой камеры.
   * @param employed_places_new: количество занятых мест.
+  * @return запись со значениями старого кортежа.
   * @throw ошибка соответствия реальности, если один из параметров меньше нуля.
   * @throw ошибка соответствия реальности, если number_of_places_new меньше employed_places_new.
-  * @return запись со значениями старого кортежа.
   */
 begin
-	if employed_places_new > number_of_places_new
+	if employed_places_new > coalesce(number_of_places_new, (select number_of_places from police.t_cell where id_cell = id_cell_up))
 	then 
 	    raise exception 'Ошибка соответствия реальности! Количество занятых мест не может превышать общее число мест!';
 	end if;
 
-	if employed_places_new < 0 or number_of_places_new <= 0
+	if employed_places_new < 0 or (not (number_of_places_new is null) and number_of_places_new <= 0)
 	then 
 	    raise exception 'Ошибка соответствия реальности! Количество общих мест не может быть нулём и менее или количество занятых мест не может быть меньше нуля!';
 	end if;
@@ -106,9 +106,10 @@ language plpgsql;
 -- Проверка работы функций: 
 -- select * from police.insert_in_t_cell(5, 0);
 -- select * from police.t_cell;
--- select * from police.update_t_cell(2, 6, 2);
+-- select * from police.update_t_cell(2, null, 7);
+-- select * from police.update_t_cell(2, null, 6);
 -- select * from police.t_cell;
--- select * from police.delete_from_t_cell(2);
+-- select * from police.delete_from_t_cell(3);
 -- select * from police.t_cell;
 -- select * from police.insert_in_t_cell(0, 0);
 -- select * from police.insert_in_t_cell(2, -3);
