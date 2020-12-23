@@ -115,10 +115,14 @@ IN GROUP staff;
 GRANT USAGE ON SCHEMA police
 TO sherlock_holms;
 
+GRANT USAGE, SELECT ON SEQUENCE police.t_evidence_id_evidence_seq TO sherlock_holms;
+GRANT USAGE, SELECT ON SEQUENCE police.t_logger_id_log_seq TO sherlock_holms;
+
 GRANT SELECT, INSERT
 ON TABLE police.t_protocol,
 	police.tcl_case_name,
-	police.t_evidence
+	police.t_evidence,
+	police.t_logger
 TO sherlock_holms;
  -- porfiriy_petrovich
    -- создание
@@ -132,8 +136,12 @@ TO porfiriy_petrovich;
 
 GRANT SELECT, INSERT
 ON TABLE police.t_protocol,
-	police.t_evidence
+	police.t_evidence,
+	police.t_logger
 TO porfiriy_petrovich;
+
+GRANT USAGE, SELECT ON SEQUENCE police.t_evidence_id_evidence_seq TO porfiriy_petrovich;
+GRANT USAGE, SELECT ON SEQUENCE police.t_logger_id_log_seq TO porfiriy_petrovich;
 
 -- Добавления свойства учета политики защиты строк для пользователей групповых ролей
 ALTER ROLE staff WITH NOBYPASSRLS;
